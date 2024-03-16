@@ -8,6 +8,8 @@ import Badge from '@mui/material/Badge';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import {  useSelector } from 'react-redux';
+import {Table} from "react-bootstrap";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Header = ()=> {
 const {cart} = useSelector(state => state.updateCart)
@@ -59,16 +61,70 @@ const {cart} = useSelector(state => state.updateCart)
         <MenuItem onClick={handleClose}>
             
 {
-  cart.length === 0 ?  <div>your cart is empty</div> : <div> user cart </div>
+  cart.length === 0 ?  <div>your cart is empty</div> :
+   <div style={{width: "40rem"}}>
+    <div>
+    <Table className='striped bordered hover'>
+      <thead>
+        <tr>
+        <td>
+          Photos
+        </td>
+        <td>
+          Details
+        </td>
+        </tr>
+      </thead>
+
+{
+  cart.map(product => {
+    return(
+    <tbody>
+          <tr>
+    <td>
+       <img style={{width: "5rem", height: "5rem"}} src={product.image} alt="" />
+      </td>
+      <td>
+        <p>{product.title}</p>
+        <p>Price :${product.price}</p>
+        <p>rating: {product.rating.rate}</p>
+        <p>no. of products</p>
+       <div className='d-flex justify-content-between w-50'>
+        <p>-</p>
+        <p>x{product.rating.count}</p>
+        <p>+</p>
+       </div>
+      </td>
+<td>
+  <DeleteIcon style={{ fontSize: "3rem" , cursor: "pointer" , color: "red"}}/>
+</td>
+
+      </tr>
+    </tbody>
+
+)})
 }
 
 
-           
-        </MenuItem>
-        
+
+     
+
+      <tfoot>
+      <tr>
+      <div>
+          total
+        </div>
+      </tr>
+       
+      </tfoot>
+    </Table>
+
+
+    </div>
+     </div>
+}         
+        </MenuItem>    
       </Menu>
-
-
         </div>
     )
 }
