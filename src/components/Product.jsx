@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import {useSelector, useDispatch} from "react-redux"
-import add from '../actions/action';
+import {add , removeOne} from '../actions/action';
 
 const Product = ()=> {
 const cart = useSelector(state => state.updateCart)

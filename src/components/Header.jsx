@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,15 +7,30 @@ import { NavLink } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {  useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import {Table} from "react-bootstrap";
 import DeleteIcon from '@mui/icons-material/Delete';
+import add, { remove, removeOne } from '../actions/action';
 
 const Header = ()=> {
 const {cart} = useSelector(state => state.updateCart)
 
+const getTotal = () => {
+  let price = 0
+  cart.map(product =>
+      price = product.price * product.rating.count + price
+  )
+  setTotal(price)
+}
+useEffect(() => {
+  getTotal()
+});
+
+const dispatch = useDispatch()
+const [total, setTotal] = useState(0);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -58,7 +73,7 @@ const {cart} = useSelector(state => state.updateCart)
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem >
             
 {
   cart.length === 0 ?  <div>your cart is empty</div> :
@@ -90,13 +105,13 @@ const {cart} = useSelector(state => state.updateCart)
         <p>rating: {product.rating.rate}</p>
         <p>no. of products</p>
        <div className='d-flex justify-content-between w-50'>
-        <p>-</p>
+        <p onClick={product.rating.count === 1 ? () => dispatch(remove(product)) : () => dispatch(removeOne(product))}>-</p>
         <p>x{product.rating.count}</p>
-        <p>+</p>
+        <p onClick={() => dispatch(add(product))}>+</p>
        </div>
       </td>
 <td>
-  <DeleteIcon style={{ fontSize: "3rem" , cursor: "pointer" , color: "red"}}/>
+  <DeleteIcon onClick={() => dispatch(remove(product))} style={{ fontSize: "3rem" , cursor: "pointer" , color: "red"}}/>
 </td>
 
       </tr>
@@ -112,7 +127,7 @@ const {cart} = useSelector(state => state.updateCart)
       <tfoot>
       <tr>
       <div>
-          total
+          Total: ${total.toFixed(2)}
         </div>
       </tr>
        
