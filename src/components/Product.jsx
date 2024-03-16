@@ -2,8 +2,14 @@ import React, {useEffect , useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import {useSelector, useDispatch} from "react-redux"
+import add from '../actions/action';
 
 const Product = ()=> {
+const cart = useSelector(state => state.updateCart)
+const dispatch = useDispatch();
+console.log(cart);
+
 
     const [data, setData] = useState([]);
 console.log(data)
@@ -12,7 +18,11 @@ console.log(data)
         .then(res=>res.json())
         setData(response)
     }
-   
+   const send = (list => {
+dispatch(add(list))
+   })
+
+
     useEffect(()=>{
         getData()
     }, []);
@@ -29,7 +39,7 @@ console.log(data)
       <ListGroup.Item>Price - ${list.price}</ListGroup.Item>
       <ListGroup.Item>Rating {list.rating.rate}</ListGroup.Item>
    
-      <ListGroup.Item><Button variant="primary">Add to cart</Button></ListGroup.Item>
+      <ListGroup.Item><Button variant="primary" onClick={()=>send(list)}>Add to cart</Button></ListGroup.Item>
     </ListGroup>
     
       </Card>

@@ -4,11 +4,15 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { NavLink } from 'react-router-dom';
-
+import Badge from '@mui/material/Badge';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import {  useSelector } from 'react-redux';
 
 const Header = ()=> {
+const {cart} = useSelector(state => state.updateCart)
+
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -28,7 +32,7 @@ const Header = ()=> {
           <Nav className="me-auto w-100">
             <NavLink to="/" className={"text-decoration-none text-white"}>Products</NavLink>
             <NavLink  className ='w-100 text-decoration-none text-white'>
-                <ShoppingCartIcon onClick={handleClick} style={{float: "right"}}/>
+            <Badge  style={{float: "right"}} badgeContent={cart.length} color="primary"><ShoppingCartIcon onClick={handleClick}/>    </Badge>
            </NavLink>
           
           </Nav>
@@ -54,7 +58,12 @@ const Header = ()=> {
       >
         <MenuItem onClick={handleClose}>
             
-            <div>your cart is empty</div>
+{
+  cart.length === 0 ?  <div>your cart is empty</div> : <div> user cart </div>
+}
+
+
+           
         </MenuItem>
         
       </Menu>
